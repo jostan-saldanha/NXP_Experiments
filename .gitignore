@@ -1,0 +1,24 @@
+# Build outputs & temporary files
+**/CMakeFiles/
+**/.cmake/
+**/CMakeCache.txt
+**/cmake_install.cmake
+**/build.ninja
+**/.ninja_*
+**/compile_commands.json
+**/*.obj
+**/*.o
+**/*.d
+
+# SDK symlinks / junctions
+**/__repo__
+
+# IDE & Editor caches
+.codex/
+*.log
+
+# Keep binary outputs if desired (.elf, .hex, .srec, .bin)
+!*.elf
+!*.hex
+!*.srec
+!*.bin

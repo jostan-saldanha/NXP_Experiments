@@ -1,0 +1,7 @@
+reset
+halt
+loadfile armgcc/flash_debug/wireless_uart.srec
+reset
+go
+quit
+

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FRDM-RW612 Experiments Execution Guide</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 16mm 16mm 16mm 16mm;
+            @bottom-right {
+                content: counter(page);
+            }
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 10pt;
+            line-height: 1.5;
+            color: #24292e;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            font-size: 19pt;
+            color: #032f62;
+            border-bottom: 2px solid #0366d6;
+            padding-bottom: 6px;
+            margin-top: 0;
+            margin-bottom: 6px;
+        }
+        .subtitle {
+            font-size: 10.5pt;
+            color: #586069;
+            margin-bottom: 16px;
+        }
+        h2 {
+            font-size: 13.5pt;
+            color: #0366d6;
+            border-bottom: 1px solid #eaecef;
+            padding-bottom: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            page-break-after: avoid;
+        }
+        h3 {
+            font-size: 11pt;
+            color: #24292e;
+            margin-top: 14px;
+            margin-bottom: 6px;
+            page-break-after: avoid;
+        }
+        p {
+            margin: 0 0 8px 0;
+        }
+        ul, ol {
+            margin: 0 0 10px 0;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+        code {
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 9pt;
+            background-color: #f6f8fa;
+            border: 1px solid #e1e4e8;
+            padding: 1px 4px;
+            border-radius: 3px;
+            color: #d73a49;
+        }
+        pre {
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 8.5pt;
+            background-color: #f6f8fa;
+            border: 1px solid #e1e4e8;
+            border-left: 4px solid #0366d6;
+            padding: 8px 12px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 6px 0 10px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0 14px 0;
+            font-size: 9.5pt;
+        }
+        th, td {
+            border: 1px solid #dfe2e5;
+            padding: 6px 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f1f8ff;
+            color: #032f62;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #fbfbfc;
+        }
+        .callout {
+            background-color: #f1f8ff;
+            border-left: 4px solid #2188ff;
+            padding: 8px 12px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 9.5pt;
+        }
+        .callout-warn {
+            background-color: #fffbdd;
+            border-left: 4px solid #d99b00;
+            padding: 8px 12px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 9.5pt;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        .badge {
+            display: inline-block;
+            font-size: 8pt;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #fff;
+            background-color: #28a745;
+        }
+        .badge-blue {
+            background-color: #0366d6;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>FRDM-RW612 Experiments Execution Guide</h1>
+    <div class="subtitle">
+        <strong>IoT Lab (EC2601-21)</strong> | Board: <strong>NXP FRDM-RW612</strong> | Workspace: <code>D:\NXP_Programs</code>
+    </div>
+
+    <h2>1. Overview of Experiments</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Experiment</th>
+                <th>Project Folder</th>
+                <th>Lab Exp #</th>
+                <th>Primary Test Tools</th>
+                <th>Key Deliverable</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>BLE Communication</strong></td>
+                <td><code>frdmrw612_wireless_uart</code></td>
+                <td>Exp 8</td>
+                <td>IoT Toolbox or nRF Connect (Smartphone)</td>
+                <td>Bidirectional Serial over GATT</td>
+            </tr>
+            <tr>
+                <td><strong>MQTT Pub / Sub</strong></td>
+                <td><code>wifi_mqtt</code></td>
+                <td>Exp 6</td>
+                <td>Mosquitto &amp; MQTT Explorer (PC)</td>
+                <td>Publish/Subscribe via lwIP stack</td>
+            </tr>
+            <tr>
+                <td><strong>Matter over Wi-Fi / Thread</strong></td>
+                <td><code>frdm_rw612_light_switch_otbr_combo</code></td>
+                <td>Exp 5</td>
+                <td>NXP Chip-tool (Android App)</td>
+                <td>BLE Commissioning &amp; Dual Endpoint Control</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>Common Hardware &amp; Serial Terminal Setup:</strong><br>
+        &bull; Connect the FRDM-RW612 to the PC via a USB-C cable to the on-board MCU-Link debug port.<br>
+        &bull; Open a Serial Terminal (VS Code Serial Monitor / Tera Term / PuTTY) at: <strong>115200 baud, 8 data bits, no parity, 1 stop bit, no flow control</strong>.<br>
+        &bull; J-Link software is installed at: <code>C:\Program Files\SEGGER\JLink_V952\JLink.exe</code>.
+    </div>
+
+    <h2>2. Experiment A: BLE Communication (wireless_uart)</h2>
+    <p><strong>What it does:</strong> The board implements a custom GATT &ldquo;Wireless UART&rdquo; service that emulates a serial stream over BLE. By default it advertises as <code>NXP_WU</code>. A short press of user button SW1 makes it scan as a central; a long press returns it to peripheral mode.</p>
+
+    <h3>2.1 Build Status &amp; Binaries</h3>
+    <ul>
+        <li>Compiler flag updated in <code>armgcc/flags.cmake</code> (<code>-Og</code>) to resolve GCC 14 register constraints in crypto modules.</li>
+        <li>Firmware built at: <code>frdmrw612_wireless_uart/armgcc/flash_debug/wireless_uart.srec</code> (and <code>.elf</code>, <code>.hex</code>, <code>sdk20-app.bin</code>).</li>
+    </ul>
+
+    <h3>2.2 Flashing Procedure</h3>
+    <ol>
+        <li>Open terminal or Command Prompt in <code>D:\NXP_Programs\frdmrw612_wireless_uart</code>.</li>
+        <li>Execute the automated flashing batch script:
+            <pre>flash_jlink.bat</pre>
+            <em>(This runs J-Link with <code>commands_script</code>: reset, halt, loadfile <code>wireless_uart.srec</code>, reset, go).</em>
+        </li>
+        <li>Press <strong>SW1</strong> or reset the board.</li>
+    </ol>
+
+    <h3>2.3 Verification Steps</h3>
+    <ol>
+        <li><strong>Check Serial Output:</strong> The terminal should print:
+<pre>BLE Wireless Uart demo start...
+Bluetooth initialized
+Advertising successfully started</pre>
+        </li>
+        <li><strong>Connect via Smartphone (Peripheral Test):</strong>
+            <ul>
+                <li>Open <strong>NXP IoT Toolbox</strong> &rarr; Select <strong>Wireless UART</strong> (or open <strong>nRF Connect</strong>).</li>
+                <li>Tap <strong>NXP_WU</strong> to connect. <em>Accept the pairing popup in your phone's notification bar</em>.</li>
+                <li><strong>Phone &rarr; Board:</strong> Type a message on the phone; verify it appears in your PC serial terminal.</li>
+                <li><strong>Board &rarr; Phone:</strong> Type characters in the serial terminal; confirm they display on the phone screen.</li>
+            </ul>
+        </li>
+    </ol>
+
+    <div class="page-break"></div>
+
+    <h2>3. Experiment B: MQTT Publish/Subscribe (wifi_mqtt)</h2>
+    <p><strong>What it does:</strong> The board connects to a 2.4 GHz Wi-Fi AP, connects to an MQTT broker, subscribes to <code>lwip_topic/#</code> (QoS 0) and <code>lwip_other/#</code> (QoS 1), and publishes <em>&ldquo;message from board&rdquo;</em> to <code>lwip_topic/100</code>.</p>
+
+    <h3>3.1 Set Up Local Mosquitto Broker</h3>
+    <ol>
+        <li>Find your PC's IPv4 address: Run <code>ipconfig</code> in terminal (e.g. <code>192.168.1.50</code>).</li>
+        <li>Start the local Mosquitto broker:
+            <pre>cd D:\NXP_Programs\wifi_mqtt
+start_mosquitto.bat</pre>
+            <em>(Uses <code>mosquitto.conf</code> with port 1883 and <code>allow_anonymous true</code>).</em>
+        </li>
+    </ol>
+
+    <h3>3.2 Configure Wi-Fi &amp; Broker in wifi_mqtt.c</h3>
+    <p>Open <code>D:\NXP_Programs\wifi_mqtt\wifi_mqtt.c</code> and verify/set lines 33&ndash;49:</p>
+<pre>#define AP_SSID "Your_2.4GHz_SSID"
+#define AP_PASSWORD "Your_WiFi_Password"
+#define EXAMPLE_MQTT_SERVER_HOST "192.168.1.50"  /* PC IPv4 or "test.mosquitto.org" */
+#define EXAMPLE_MQTT_SERVER_PORT 1883</pre>
+
+    <h3>3.3 Build &amp; Flash</h3>
+    <ol>
+        <li>In VS Code or terminal, build preset <code>flash_debug</code>.</li>
+        <li>Run the flashing script:
+            <pre>flash_jlink.bat</pre>
+        </li>
+    </ol>
+
+    <h3>3.4 Verification Steps</h3>
+    <ol>
+        <li><strong>Open MQTT Explorer on PC:</strong>
+            <ul>
+                <li>Host: <code>localhost</code> (or PC IP), Port: <code>1883</code>. Click <strong>Connect</strong>.</li>
+                <li>Add topic subscription: <code>lwip_topic/#</code>.</li>
+            </ul>
+        </li>
+        <li><strong>Verify Terminal Output:</strong>
+<pre>[i] Successfully initialized Wi-Fi module
+Connecting as client to ssid: Your_SSID
+[i] Connected to Wi-Fi
+IPv4 Address : 192.168.x.x
+Connecting to MQTT broker at 192.168.1.50...
+MQTT client "nxp_xxxx" connected.
+Subscribed to the topic "lwip_topic/#".
+Going to publish to the topic "lwip_topic/100"...
+Received 18 bytes from the topic "lwip_topic/100": "message from board"
+Published to the topic "lwip_topic/100".</pre>
+        </li>
+        <li><strong>Subscriber Test:</strong> In MQTT Explorer, publish a custom message to <code>lwip_topic/test</code> &rarr; verify it appears in the serial terminal console.</li>
+        <li><strong>HTTP Note:</strong> For the HTTP requirement, browse to the board's IP address (using the <code>wifi_httpsrv</code> firmware).</li>
+    </ol>
+
+    <div class="page-break"></div>
+
+    <h2>4. Experiment C: Matter over Wi-Fi / Thread (Light Switch OTBR)</h2>
+    <p><strong>What it does:</strong> The board functions as a Matter accessory over Wi-Fi with an integrated OpenThread Border Router (OTBR). Endpoint 1 is a dimmable Light Bulb, and Endpoint 2 is a Light Switch. It is commissioned via Bluetooth using the NXP Chip-tool app on Android.</p>
+
+    <h3>4.1 Firmware Preparation</h3>
+    <ul>
+        <li><strong>Route 1 (Prebuilt):</strong> Place <code>chip-rw61x-light-switch-combo-example.srec</code> (or <code>.hex</code>) directly into <code>D:\NXP_Programs\frdm_rw612_light_switch_otbr_combo</code>.</li>
+        <li><strong>Route 2 (Build on Linux/WSL):</strong> Run <code>./build_matter_linux.sh</code> which clones Matter v1.4.0.0, overlays files, and runs <code>gn gen</code> &amp; <code>ninja</code>.</li>
+    </ul>
+
+    <h3>4.2 Flashing Procedure</h3>
+    <ol>
+        <li>Execute the flashing script in <code>D:\NXP_Programs\frdm_rw612_light_switch_otbr_combo</code>:
+            <pre>flash_jlink.bat</pre>
+            <em>(Uses <code>commands_script</code> to flash <code>chip-rw61x-light-switch-combo-example.srec</code> via J-Link).</em>
+        </li>
+    </ol>
+
+    <h3>4.3 Commissioning &amp; Control (NXP Chip-tool Android App)</h3>
+    <ol>
+        <li><strong>Access Point Requirement:</strong> Connect Android phone to a <strong>2.4 GHz WPA2</strong> network (WPA3 is not supported; ensure IPv6 DHCP is disabled on AP).</li>
+        <li><strong>Factory Reset Board:</strong> Hold <strong>SW2</strong> for 3 seconds (or type <code>matterfactoryreset</code> in serial console).</li>
+        <li><strong>Pair in App:</strong>
+            <ul>
+                <li>Enable phone Bluetooth. Open <strong>NXP Matter Chip-tool</strong>.</li>
+                <li>Tap <strong>Pair New Device (WiFi Device)</strong> &rarr; Select <strong>Manual Entry</strong>.</li>
+                <li>Enter <strong>Discriminator: <code>3840</code></strong> and <strong>PIN: <code>20202021</code></strong>.</li>
+                <li>Enter your Wi-Fi SSID and Password when prompted.</li>
+            </ul>
+        </li>
+        <li><strong>Control the Light:</strong>
+            <ul>
+                <li>After pairing completes, name the device and toggle the light <strong>ON / OFF</strong> in the app.</li>
+                <li>Press physical buttons on the FRDM-RW612 to toggle the local bulb and observe status update in the app.</li>
+            </ul>
+        </li>
+        <li><strong>CLI Commands (Optional):</strong>
+            <ul>
+                <li><code>otcli state</code> &rarr; View Thread role (Leader / Router).</li>
+                <li><code>otcli dataset active</code> &rarr; Inspect Thread channel, PAN ID, and network key.</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h2>5. Lab Report Screenshots Checklist</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Screenshot Type</th>
+                <th>BLE (Exp 8)</th>
+                <th>MQTT (Exp 6)</th>
+                <th>Matter (Exp 5)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>1. Project Workspace</strong></td>
+                <td>VS Code project view</td>
+                <td>VS Code project view</td>
+                <td>Folder / build directory</td>
+            </tr>
+            <tr>
+                <td><strong>2. Build Success</strong></td>
+                <td>Build Output (0 errors)</td>
+                <td>Build Output (0 errors)</td>
+                <td>Ninja build completion</td>
+            </tr>
+            <tr>
+                <td><strong>3. Flashing Log</strong></td>
+                <td>J-Link flash log</td>
+                <td>J-Link flash log</td>
+                <td>J-Link flash log</td>
+            </tr>
+            <tr>
+                <td><strong>4. Serial Output</strong></td>
+                <td>Advertising &amp; TX/RX log</td>
+                <td>Wi-Fi IP &amp; Pub/Sub log</td>
+                <td>Boot &amp; Commissioning log</td>
+            </tr>
+            <tr>
+                <td><strong>5. App / Tool Output</strong></td>
+                <td>IoT Toolbox chat window</td>
+                <td>MQTT Explorer message tree</td>
+                <td>Chip-tool app ON/OFF UI</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
+

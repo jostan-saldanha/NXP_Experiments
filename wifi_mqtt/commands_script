@@ -1,0 +1,7 @@
+reset
+halt
+loadfile flash_debug/wifi_mqtt.srec
+reset
+go
+quit
+

@@ -1,0 +1,7 @@
+reset
+halt
+loadfile chip-rw61x-light-switch-combo-example.srec
+reset
+go
+quit
+
