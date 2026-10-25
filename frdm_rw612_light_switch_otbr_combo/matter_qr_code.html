@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Matter QR Code - FRDM-RW612</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      text-align: center;
+      background: #18181b;
+      color: #f4f4f5;
+      padding: 40px 20px;
+    }
+    .card {
+      background: #27272a;
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      border: 1px solid #3f3f46;
+    }
+    h1 {
+      color: #22c55e;
+      font-size: 24px;
+      margin: 0 0 8px 0;
+    }
+    p {
+      color: #a1a1aa;
+      font-size: 15px;
+      margin: 0 0 24px 0;
+    }
+    .qr-container {
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      display: inline-block;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .qr-container img {
+      width: 280px;
+      height: 280px;
+      display: block;
+    }
+    .details {
+      background: #18181b;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: left;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      border: 1px solid #3f3f46;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+    }
+    .label {
+      color: #a1a1aa;
+    }
+    .val {
+      color: #4ade80;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Matter Device QR Code</h1>
+    <p>Point your <b>nRF Matter</b> camera at this QR code</p>
+    <div class="qr-container">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&amp;data=MT%3AY.K9042C00KA0648G00" alt="Matter QR Code" />
+    </div>
+    <div class="details">
+      <div class="row"><span class="label">Payload:</span> <span class="val">MT:Y.K9042C00KA0648G00</span></div>
+      <div class="row"><span class="label">Passcode:</span> <span class="val">20202021</span></div>
+      <div class="row"><span class="label">Discriminator:</span> <span class="val">3840 (0x0F00)</span></div>
+      <div class="row"><span class="label">Manual Code:</span> <span class="val">34970112332</span></div>
+    </div>
+  </div>
+</body>
+</html>
